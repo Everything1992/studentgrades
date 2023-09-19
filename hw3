@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Student Grades Calculator">
+    <title>Student Grades</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Grades</h1>
+    <form id="gradeForm">
+        <label for="hwAvg">Homework Average:</label>
+        <input type="number" id="hwAvg" min="0" max="100" required>
+
+        <label for="midExam">Mid-Term Exam Score:</label>
+        <input type="number" id="midExam" min="0" max="100" required>
+
+        <label for="finalExam">Final Exam Score:</label>
+        <input type="number" id="finalExam" min="0" max="100" required>
+
+        <label for="participation">Participation:</label>
+        <input type="number" id="participation" min="0" max="100" required>
+
+        <button type="button" onclick="calculateGrade()">Calculate</button>
+        <button type="button" onclick="resetForm()">Clear</button>
+
+        <textarea id="resultArea" readonly></textarea>
+    </form>
+
+    <script>
+        function calculateGrade() {
+            // Get input values
+            const hwAvg = parseFloat(document.getElementById("hwAvg").value);
+            const midExam = parseFloat(document.getElementById("midExam").value);
+            const finalExam = parseFloat(document.getElementById("finalExam").value);
+            const participation = parseFloat(document.getElementById("participation").value);
+
+            // Check for valid input
+            if (isNaN(hwAvg) || isNaN(midExam) || isNaN(finalExam) || isNaN(participation) ||
+                hwAvg < 0 || hwAvg > 100 || midExam < 0 || midExam > 100 || finalExam < 0 || finalExam > 100 || participation < 0 || participation > 100) {
+                document.getElementById("resultArea").value = "Invalid input. Please enter valid grades between 0 and 100.";
+                return;
+            }
+
+            // Calculate final average
+            const finalAverage = (.5 * hwAvg) + (.2 * midExam) + (.2 * finalExam) + (.1 * participation);
+
+            // Determine letter grade
+            let letterGrade;
+            if (finalAverage >= 90) {
+                letterGrade = "A";
+            } else if (finalAverage >= 80) {
+                letterGrade = "B";
+            } else if (finalAverage >= 70) {
+                letterGrade = "C";
+            } else if (finalAverage >= 60) {
+                letterGrade = "D";
+            } else {
+                letterGrade = "F";
+            }
+
+            // Display result
+            let resultMessage = `Final Average: ${Math.round(finalAverage)}\nLetter Grade: ${letterGrade}`;
+            if (letterGrade === 'D' || letterGrade === 'F') {
+                resultMessage += "\nStudent must retake the course";
+            }
+            document.getElementById("resultArea").value = resultMessage;
+        }
+
+        function resetForm() {
+            document.getElementById("gradeForm").reset();
+            document.getElementById("resultArea").value = "";
+        }
+    </script>
+</body>
+</html>
